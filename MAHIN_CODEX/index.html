@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🇧🇩 NAIM — PREMIUM SQUAD BOT DASHBOARD</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --bd-green:#006a4e; --bd-red:#f42a41;
+  --gold:#ffcc00; --orange:#ff8800;
+  --cyan:#00d4ff; --purple:#a855f7; --pink:#ff3366;
+  --bg0:#05000a; --bg1:#0d0016; --bg2:#150022;
+  --card:rgba(22,0,34,.72); --border:rgba(255,51,102,.28);
+  --txt:#f0e8ff; --dim:#8b7fa8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(circle at 12% 8%,rgba(255,51,102,.16),transparent 42%),
+    radial-gradient(circle at 88% 92%,rgba(0,212,255,.13),transparent 45%),
+    radial-gradient(circle at 50% 50%,rgba(168,85,247,.08),transparent 60%),
+    linear-gradient(160deg,var(--bg0),var(--bg1) 45%,var(--bg2));
+  color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:16px;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,51,102,.03) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at center,#000 30%,transparent 78%);
+}
+.wrap{position:relative;z-index:1;max-width:1560px;margin:0 auto}
 
+/* ══ HEADER ══ */
+.head{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:18px 24px;margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(255,51,102,.14),rgba(168,85,247,.09));
+  border:1.5px solid var(--border);border-radius:20px;
+  box-shadow:0 0 42px rgba(255,51,102,.22),inset 0 0 42px rgba(168,85,247,.05);
+  backdrop-filter:blur(14px);
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand .flag{font-size:2.4rem;filter:drop-shadow(0 0 14px rgba(255,204,0,.6));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.brand h1{
+  font-size:1.85rem;font-weight:900;letter-spacing:3px;line-height:1.1;
+  background:linear-gradient(90deg,var(--bd-red),var(--gold) 45%,var(--bd-green));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 18px rgba(255,51,102,.45));
+}
+.brand .sub{font-size:.72rem;letter-spacing:2.4px;color:var(--dim);font-weight:600;margin-top:3px}
+.head-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{
+  padding:7px 15px;border-radius:30px;font-size:.72rem;font-weight:800;letter-spacing:1.2px;
+  border:1px solid;display:flex;align-items:center;gap:6px;
+}
+.pill.green{color:var(--bd-green);border-color:rgba(0,255,100,.45);background:rgba(0,255,100,.08)}
+.pill.gold{color:var(--gold);border-color:rgba(255,204,0,.45);background:rgba(255,204,0,.08)}
+.pill.cyan{color:var(--cyan);border-color:rgba(0,212,255,.45);background:rgba(0,212,255,.08)}
+.pill.red{color:var(--bd-red);border-color:rgba(244,42,65,.45);background:rgba(244,42,65,.08)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor;animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.28}}
+
+/* ══ STATS GRID ══ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin-bottom:16px}
+.stat{
+  position:relative;overflow:hidden;padding:16px 18px;border-radius:16px;
+  background:var(--card);border:1.5px solid var(--border);backdrop-filter:blur(12px);
+  transition:.25s;cursor:default;
+}
+.stat:hover{transform:translateY(-3px);border-color:rgba(255,51,102,.55);box-shadow:0 8px 30px rgba(255,51,102,.28)}
+.stat::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--bd-red),var(--gold),var(--bd-green))}
+.stat .lbl{font-size:.62rem;letter-spacing:1.8px;color:var(--dim);font-weight:700;text-transform:uppercase}
+.stat .val{font-size:1.72rem;font-weight:900;margin-top:6px;letter-spacing:1px}
+.stat.g .val{color:var(--bd-green)}
+.stat.y .val{color:var(--gold)}
+.stat.c .val{color:var(--cyan)}
+.stat.r .val{color:var(--bd-red)}
+.stat.p .val{color:var(--purple)}
+
+/* ══ LAYOUT ══ */
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:1080px){.grid{grid-template-columns:1fr}}
+.card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:18px;
+  backdrop-filter:blur(14px);overflow:hidden;
+  box-shadow:0 0 26px rgba(0,0,0,.5),inset 0 0 26px rgba(168,85,247,.03);
+}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:13px 18px;border-bottom:1px solid rgba(255,51,102,.18);
+  background:linear-gradient(90deg,rgba(255,51,102,.09),transparent);
+}
+.card-head h2{font-size:.9rem;letter-spacing:2.2px;font-weight:800;display:flex;align-items:center;gap:8px}
+.card-head .tools{display:flex;gap:7px;flex-wrap:wrap}
+.card-body{padding:14px 18px}
+
+/* ══ BUTTONS ══ */
+.btn{
+  padding:7px 14px;border-radius:9px;font-size:.72rem;font-weight:800;letter-spacing:1px;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
+  color:var(--txt);cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.btn:hover{background:rgba(255,51,102,.2);border-color:var(--pink);transform:translateY(-1px)}
+.btn.red{border-color:rgba(244,42,65,.5);color:#ff9aa6}
+.btn.red:hover{background:rgba(244,42,65,.22)}
+.btn.green{border-color:rgba(0,255,100,.5);color:#7dffb0}
+.btn.green:hover{background:rgba(0,255,100,.18)}
+.btn.gold{border-color:rgba(255,204,0,.5);color:var(--gold)}
+.btn.gold:hover{background:rgba(255,204,0,.16)}
+.btn.cyan{border-color:rgba(0,212,255,.5);color:var(--cyan)}
+.btn.cyan:hover{background:rgba(0,212,255,.16)}
+
+/* ══ INPUT ══ */
+.inp,select{
+  width:100%;padding:10px 13px;border-radius:10px;font-size:.8rem;
+  background:rgba(0,0,0,.42);border:1.2px solid rgba(255,51,102,.24);
+  color:var(--txt);outline:none;transition:.2s;font-family:inherit;
+}
+.inp:focus,select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,51,102,.14)}
+.inp::placeholder{color:#5d5274}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{
+  flex:1;padding:8px;text-align:center;border-radius:9px;font-size:.72rem;font-weight:800;
+  letter-spacing:1px;cursor:pointer;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);transition:.2s;
+}
+.tab.on{background:linear-gradient(90deg,rgba(255,51,102,.28),rgba(168,85,247,.22));border-color:var(--pink);color:#fff}
+
+/* ══ ACCOUNT LIST ══ */
+.acc-list{display:flex;flex-direction:column;gap:10px;max-height:640px;overflow-y:auto;padding-right:4px}
+.acc-list::-webkit-scrollbar{width:6px}
+.acc-list::-webkit-scrollbar-thumb{background:rgba(255,51,102,.35);border-radius:6px}
+.acc{
+  padding:13px 15px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,51,102,.06),rgba(0,212,255,.04));
+  border:1.2px solid rgba(255,51,102,.2);transition:.22s;
+}
+.acc:hover{border-color:rgba(255,51,102,.5);transform:translateX(2px)}
+.acc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.acc-name{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.92rem}
+.acc-name .av{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:.9rem;
+  background:linear-gradient(135deg,var(--bd-red),var(--purple));
+  box-shadow:0 0 16px rgba(255,51,102,.5);flex-shrink:0;
+}
+.acc-badges{display:flex;gap:5px;flex-wrap:wrap}
+.badge{padding:3px 9px;border-radius:20px;font-size:.6rem;font-weight:800;letter-spacing:.8px;border:1px solid}
+.badge.lvl{color:var(--gold);border-color:rgba(255,204,0,.4);background:rgba(255,204,0,.08)}
+.badge.br{color:var(--cyan);border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.08)}
+.badge.lw{color:var(--purple);border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.08)}
+.badge.on{color:#7dffb0;border-color:rgba(0,255,100,.4);background:rgba(0,255,100,.08)}
+.badge.off{color:var(--bd-red);border-color:rgba(244,42,65,.4);background:rgba(244,42,65,.08)}
+.badge.pause{color:var(--gold);border-color:rgba(255,204,0,.4);background:rgba(255,204,0,.08)}
+.badge.match{color:var(--pink);border-color:rgba(255,51,102,.5);background:rgba(255,51,102,.12);animation:blink 1.4s infinite}
+.acc-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px;font-size:.68rem;margin-bottom:9px}
+.acc-meta .m .k{color:var(--dim);letter-spacing:.8px;font-size:.58rem;text-transform:uppercase;font-weight:700}
+.acc-meta .m .v{font-weight:800;color:var(--txt);margin-top:2px}
+.prog{height:7px;border-radius:7px;background:rgba(0,0,0,.5);overflow:hidden;margin-bottom:4px;border:1px solid rgba(255,255,255,.06)}
+.prog i{display:block;height:100%;border-radius:7px;
+  background:linear-gradient(90deg,var(--bd-green),var(--gold),var(--bd-red));
+  background-size:200% 100%;animation:flow 3s linear infinite;transition:width .5s}
+@keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
+.prog-lbl{display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim);font-weight:700;margin-bottom:9px}
+.acc-actions{display:flex;gap:6px;flex-wrap:wrap}
+.acc-actions .btn{flex:1;min-width:70px;text-align:center;padding:6px 8px;font-size:.65rem}
+
+/* ══ LOGS ══ */
+.logs{height:540px;overflow-y:auto;font-family:'Consolas','Courier New',monospace;font-size:.72rem;line-height:1.7;padding:12px 16px}
+.logs::-webkit-scrollbar{width:6px}
+.logs::-webkit-scrollbar-thumb{background:rgba(0,212,255,.3);border-radius:6px}
+.log{display:flex;gap:8px;padding:2px 0;border-bottom:1px dashed rgba(255,255,255,.03)}
+.log .t{color:#5d5274;flex-shrink:0;font-weight:700}
+.log .m{word-break:break-word}
+.log.success .m{color:#7dffb0}
+.log.error .m{color:#ff9aa6}
+.log.warning .m{color:var(--gold)}
+.log.info .m{color:var(--cyan)}
+
+/* ══ GUILD ══ */
+.guild-result{margin-top:10px;padding:12px;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,204,0,.25);display:none}
+.guild-result.on{display:block}
+.grow{display:flex;justify-content:space-between;padding:5px 0;font-size:.74rem;border-bottom:1px dashed rgba(255,255,255,.05)}
+.grow .k{color:var(--dim);font-weight:700}
+.grow .v{font-weight:800;color:var(--gold)}
+
+/* ══ TOAST ══ */
+#toast{
+  position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+}
+.toast{
+  padding:11px 18px;border-radius:11px;font-size:.76rem;font-weight:800;letter-spacing:.8px;
+  background:rgba(20,0,30,.95);border:1.5px solid var(--pink);color:#fff;
+  box-shadow:0 0 28px rgba(255,51,102,.4);animation:slideIn .3s ease;
+}
+.toast.green{border-color:var(--bd-green);box-shadow:0 0 28px rgba(0,255,100,.35)}
+.toast.red{border-color:var(--bd-red);box-shadow:0 0 28px rgba(244,42,65,.4)}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ══ MISC ══ */
+.empty{text-align:center;padding:28px;color:var(--dim);font-size:.8rem;letter-spacing:1px}
+.foot{text-align:center;padding:18px;color:var(--dim);font-size:.68rem;letter-spacing:1.4px;margin-top:8px}
+.foot strong{color:var(--pink)}
+.loader{width:14px;height:14px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="brand">
+      <div class="flag">🇧🇩</div>
+      <div>
+        <h1>NAIM SQUAD BOT</h1>
+        <div class="sub">PREMIUM EDITION v2.0 • © 2026</div>
+      </div>
+    </div>
+    <div class="head-right">
+      <div class="pill green"><span class="dot"></span>BOT LIVE</div>
+      <div class="pill gold" id="pillUptime">⏱ 00:00:00</div>
+      <div class="pill cyan" id="pillAcc">👤 0 Accounts</div>
+      <div class="pill red" id="pillMatch">⚔ 0 Matches</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat g"><div class="lbl">Total Accounts</div><div class="val" id="sAcc">0</div></div>
+    <div class="stat y"><div class="lbl">Total Matches</div><div class="val" id="sMatch">0</div></div>
+    <div class="stat c"><div class="lbl">Active Matching</div><div class="val" id="sActive">0</div></div>
+    <div class="stat r"><div class="lbl">Total EXP Gained</div><div class="val" id="sExp">0</div></div>
+    <div class="stat p"><div class="lbl">EXP / Hour</div><div class="val" id="sExpH">0</div></div>
+    <div class="stat y"><div class="lbl">Uptime</div><div class="val" id="sUp" style="font-size:1.15rem">00:00:00</div></div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid">
+
+    <!-- LEFT: ACCOUNTS -->
+    <div class="card">
+      <div class="card-head">
+        <h2>👤 LIVE ACCOUNT MATCHING</h2>
+        <div class="tools">
+          <button class="btn green" onclick="addAcc()">➕ ADD</button>
+          <button class="btn gold" onclick="pauseAll()">⏯ PAUSE ALL</button>
+          <button class="btn" onclick="loadStats()">🔄 REFRESH</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="acc-list" id="accList"><div class="empty">Loading accounts...</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: ADD + GUILD -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- ADD ACCOUNT -->
+      <div class="card">
+        <div class="card-head"><h2>➕ ADD ACCOUNT</h2></div>
+        <div class="card-body">
+          <div class="tabs">
+            <div class="tab on" id="tabGuest" onclick="switchTab('guest')">🔑 UID + PASS</div>
+            <div class="tab" id="tabToken" onclick="switchTab('token')">🎫 TOKEN</div>
+          </div>
+          <div id="formGuest">
+            <div class="form-row">
+              <input class="inp" id="inUid" placeholder="UID (e.g. 123456789)">
+              <input class="inp" id="inPass" type="password" placeholder="Password">
+            </div>
+            <button class="btn green" style="width:100%;padding:11px" onclick="addGuest()">🚀 ADD GUEST ACCOUNT</button>
+          </div>
+          <div id="formToken" style="display:none">
+            <input class="inp" id="inToken" placeholder="Paste access token..." style="margin-bottom:9px">
+            <button class="btn cyan" style="width:100%;padding:11px" onclick="addToken()">🚀 ADD TOKEN ACCOUNT</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUILD TRACK -->
+      <div class="card">
+        <div class="card-head"><h2>🛡️ LIVE GUILD TRACK</h2></div>
+        <div class="card-body">
+          <div class="form-row">
+            <input class="inp" id="guildId" placeholder="Guild / Clan ID">
+            <select class="inp" id="guildRegion">
+              <option value="BD">🇧🇩 BD (Priority)</option>
+              <option value="IND">🇮🇳 IND</option>
+              <option value="ME">🌍 ME</option>
+              <option value="SG">🇸🇬 SG</option>
+              <option value="TH">🇹🇭 TH</option>
+              <option value="PK">🇵🇰 PK</option>
+              <option value="BR">🇧🇷 BR</option>
+              <option value="NA">🌎 NA</option>
+            </select>
+          </div>
+          <input class="inp" id="guildKey" placeholder="API Key (default: XEROX_MODS)" value="XEROX_MODS" style="margin-bottom:9px">
+          <div style="display:flex;gap:6px">
+            <button class="btn gold" style="flex:1" onclick="guildInfo()">📊 TRACK GUILD</button>
+            <button class="btn cyan" style="flex:1" onclick="clanJoin()">⚔ JOIN CLAN</button>
+          </div>
+          <div class="guild-result" id="guildResult"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="card">
+    <div class="card-head">
+      <h2>📜 LIVE LOGS <span class="loader" id="logLoader" style="display:none"></span></h2>
+      <div class="tools">
+        <button class="btn red" onclick="clearLogs()">🗑 CLEAR</button>
+      </div>
+    </div>
+    <div class="logs" id="logs"><div class="empty">Waiting for logs...</div></div>
+  </div>
+
+  <div class="foot">© 2026 <strong>NAIM</strong> — PREMIUM SQUAD BOT • 🔥 Bangladesh's #1 🔥</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = "";
+let state = { accounts: [], logs: [], lastLogCount: 0 };
+let addTab = "guest";
+
+function $(id){ return document.getElementById(id); }
+function fmt(n){ return (n||0).toLocaleString("en-US"); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function toast(msg, type="info"){
+  const d = document.createElement("div");
+  d.className = "toast " + (type==="success"?"green":type==="error"?"red":"");
+  d.textContent = msg;
+  $("toast").appendChild(d);
+  setTimeout(()=>{ d.style.opacity="0"; d.style.transform="translateX(120%)"; setTimeout(()=>d.remove(),300); }, 3200);
+}
+
+function fmtDur(sec){
+  sec = Math.max(0, sec|0);
+  const h = (sec/3600)|0, m = ((sec%3600)/60)|0, s = sec%60;
+  return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function switchTab(t){
+  addTab = t;
+  $("tabGuest").classList.toggle("on", t==="guest");
+  $("tabToken").classList.toggle("on", t==="token");
+  $("formGuest").style.display = t==="guest" ? "block" : "none";
+  $("formToken").style.display = t==="token" ? "block" : "none";
+}
+
+// ══ STATS LOADER ══
+async function loadStats(){
+  try{
+    const r = await fetch(API + "/api/stats", {cache:"no-store"});
+    const d = await r.json();
+    state.accounts = d.accounts || [];
+    renderStats(d);
+    renderAccounts(d.accounts || []);
+    renderLogs(d.logs || []);
+  }catch(e){ console.error("stats:", e); }
+}
+
+function renderStats(d){
+  $("sAcc").textContent = fmt(d.total_accounts);
+  $("sMatch").textContent = fmt(d.total_matches);
+  $("sActive").textContent = fmt(d.total_active_matches);
+  $("sExp").textContent = fmt(d.total_gained_exp);
+  $("sExpH").textContent = fmt(d.exp_per_hour);
+  $("sUp").textContent = fmtDur(d.uptime);
+  $("pillUptime").textContent = "⏱ " + fmtDur(d.uptime);
+  $("pillAcc").textContent = "👤 " + fmt(d.total_accounts) + " Accounts";
+  $("pillMatch").textContent = "⚔ " + fmt(d.total_matches) + " Matches";
+}
+
+// ══ ACCOUNTS RENDER ══
+function renderAccounts(accs){
+  const box = $("accList");
+  if(!accs.length){ box.innerHTML = '<div class="empty">No accounts yet — add one above ⬆</div>'; return; }
+
+  let html = "";
+  for(const a of accs){
+    const status = a.is_paused ? "pause" : (a.status||"ONLINE");
+    const stClass = status==="IN_MATCH" ? "match" : status==="PAUSED"||status==="pause" ? "pause" : status==="ONLINE" ? "on" : "off";
+    const stTxt = status==="IN_MATCH" ? "⚔ MATCHING" : status==="PAUSED"||status==="pause" ? "⏸ PAUSED" : status==="ONLINE" ? "● ONLINE" : (status||"OFF");
+    const modeCls = a.mode==="BR" ? "br" : "lw";
+    const pct = Math.max(0, Math.min(100, a.progress_pct||0));
+    const uid = esc(a.uid);
+    const nick = esc(a.nickname || a.uid);
+    const av = (a.nickname||a.uid||"?").trim().charAt(0).toUpperCase();
+
+    html += `
+    <div class="acc">
+      <div class="acc-top">
+        <div class="acc-name">
+          <div class="av">${esc(av)}</div>
+          <div>
+            <div>${nick}</div>
+            <div style="font-size:.62rem;color:var(--dim);letter-spacing:1px">UID: ${uid}</div>
+          </div>
+        </div>
+        <div class="acc-badges">
+          <span class="badge lvl">Lv ${a.level||1}</span>
+          <span class="badge ${modeCls}">${esc(a.mode||"BR")}</span>
+          <span class="badge ${stClass}">${stTxt}</span>
+        </div>
+      </div>
+
+      <div class="acc-meta">
+        <div class="m"><div class="k">Region</div><div class="v">${esc(a.region||"BD")}</div></div>
+        <div class="m"><div class="k">Matches</div><div class="v">${fmt(a.matches_played)}</div></div>
+        <div class="m"><div class="k">Active</div><div class="v">${fmt(a.active_matches)}</div></div>
+        <div class="m"><div class="k">Gained EXP</div><div class="v" style="color:var(--bd-green)">+${fmt(a.gained_exp)}</div></div>
+        <div class="m"><div class="k">Uptime</div><div class="v">${fmtDur(a.uptime_seconds)}</div></div>
+        <div class="m"><div class="k">Likes</div><div class="v">${fmt(a.likes)}</div></div>
+      </div>
+
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="prog-lbl">
+        <span>${pct}% → Lv ${a.next_level||"?"}</span>
+        <span>${fmt(a.remaining_exp)} EXP left</span>
+      </div>
+
+      <div class="acc-actions">
+        <button class="btn ${a.is_paused?'green':'gold'}" onclick="togglePause('${uid}')">${a.is_paused?'▶ RESUME':'⏸ PAUSE'}</button>
+        <button class="btn cyan" onclick="refreshAcc('${uid}')">🔄 REFRESH</button>
+        <button class="btn" onclick="restartAcc('${uid}')">♻ RESTART</button>
+        <button class="btn red" onclick="delAcc('${uid}')">🗑 DELETE</button>
+      </div>
+    </div>`;
+  }
+  box.innerHTML = html;
+}
+
+// ══ LOGS ══
+function renderLogs(logs){
+  const box = $("logs");
+  if(!logs.length){ box.innerHTML = '<div class="empty">No logs yet...</div>'; return; }
+  let html = "";
+  for(const l of logs){
+    const t = esc(l.time||"");
+    const m = esc(l.message||"");
+    const lv = l.level||"info";
+    html += `<div class="log ${lv}"><span class="t">[${t}]</span><span class="m">${m}</span></div>`;
+  }
+  box.innerHTML = html;
+  box.scrollTop = box.scrollHeight;
+}
+
+// ══ ACTIONS ══
+async function addGuest(){
+  const uid = $("inUid").value.trim();
+  const pass = $("inPass").value.trim();
+  if(!uid || !pass){ toast("UID & Password required", "error"); return; }
+  try{
+    const r = await fetch(API + "/api/account/add", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({uid, password: pass})
+    });
+    const d = await r.json();
+    if(d.status==="ok"){ toast("✅ Account added: " + uid, "success"); $("inUid").value=""; $("inPass").value=""; loadStats(); }
+    else toast("❌ " + (d.error||"failed"), "error");
+  }catch(e){ toast("❌ Network error", "error"); }
+}
+
+async function addToken(){
+  const token = $("inToken").value.trim();
+  if(!token){ toast("Token required", "error"); return; }
+  try{
+    const r = await fetch(API + "/api/account/add", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({token})
+    });
+    const d = await r.json();
+    if(d.status==="ok"){ toast("✅ Token account added", "success"); $("inToken").value=""; loadStats(); }
+    else toast("❌ " + (d.error||"failed"), "error");
+  }catch(e){ toast("❌ Network error", "error"); }
+}
+
+function addAcc(){
+  document.querySelector(".card").scrollIntoView({behavior:"smooth"});
+}
+
+async function togglePause(uid){
+  try{
+    const r = await fetch(API + "/api/account/pause", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({uid})
+    });
+    const d = await r.json();
+    if(d.status==="ok"){ toast(d.is_paused?"⏸ Paused":"▶ Resumed", "success"); loadStats(); }
+  }catch(e){ toast("❌ Pause failed", "error"); }
+}
+
+async function pauseAll(){
+  try{
+    const r = await fetch(API + "/api/account/pause_all", {
+      method:"POST", headers:{"Content-Type":"application/json"}, body:"{}"
+    });
+    const d = await r.json();
+    if(d.status==="ok"){ toast(d.all_paused?"⏸ All paused":"▶ All resumed", "success"); loadStats(); }
+  }catch(e){ toast("❌ Failed", "error"); }
+}
+
+async function refreshAcc(uid){
+  try{
+    await fetch(API + "/api/account/refresh", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({uid})
+    });
+    toast("🔄 Refresh triggered", "success");
+    setTimeout(loadStats, 800);
+  }catch(e){ toast("❌ Refresh failed", "error"); }
+}
+
+async function restartAcc(uid){
+  try{
+    await fetch(API + "/api/account/restart", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({uid})
+    });
+    toast("♻ Restart triggered", "success");
+    setTimeout(loadStats, 1000);
+  }catch(e){ toast("❌ Restart failed", "error"); }
+}
+
+async function delAcc(uid){
+  if(!confirm("Delete account " + uid + "? This cannot be undone.")) return;
+  try{
+    const r = await fetch(API + "/api/account/delete", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({uid})
+    });
+    const d = await r.json();
+    if(d.status==="ok"){ toast("🗑 Deleted", "success"); loadStats(); }
+    else toast("❌ " + (d.error||"failed"), "error");
+  }catch(e){ toast("❌ Delete failed", "error"); }
+}
+
+async function clearLogs(){
+  try{
+    await fetch(API + "/api/logs/clear", {method:"POST", headers:{"Content-Type":"application/json"}, body:"{}"});
+    $("logs").innerHTML = '<div class="empty">Logs cleared</div>';
+    toast("🗑 Logs cleared", "success");
+  }catch(e){}
+}
+
+// ══ GUILD ══
+async function guildInfo(){
+  const id = $("guildId").value.trim();
+  const region = $("guildRegion").value;
+  const key = $("guildKey").value.trim() || "XEROX_MODS";
+  if(!id){ toast("Guild ID required", "error"); return; }
+  const box = $("guildResult");
+  box.classList.add("on");
+  box.innerHTML = '<div style="text-align:center;padding:10px"><span class="loader"></span> Fetching guild...</div>';
+  try{
+    const url = `${API}/api/guildinfo?guild_id=${encodeURIComponent(id)}&region=${encodeURIComponent(region)}&key=${encodeURIComponent(key)}`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if(r.status !== 200 || d.error){
+      box.innerHTML = `<div style="color:var(--bd-red);font-weight:800">❌ ${esc(d.error||"Fetch failed")}</div>`;
+      toast("❌ Guild fetch failed", "error");
+      return;
+    }
+    const c = d.api_response.clan_basic_info || {};
+    box.innerHTML = `
+      <div class="grow"><span class="k">Guild Name</span><span class="v">${esc(c.clan_name)}</span></div>
+      <div class="grow"><span class="k">Clan ID</span><span class="v">${esc(c.clan_id)}</span></div>
+      <div class="grow"><span class="k">Region</span><span class="v">${esc(c.region||region)}</span></div>
+      <div class="grow"><span class="k">Level</span><span class="v">${esc(c.clan_level)}</span></div>
+      <div class="grow"><span class="k">Members</span><span class="v">${esc(c.current_members)} / ${esc(c.max_members)}</span></div>
+      <div class="grow"><span class="k">Captain ID</span><span class="v">${esc(c.captain_id)}</span></div>
+      <div class="grow"><span class="k">Live XP</span><span class="v">${fmt(c.Total_guild_xp||c.xp)}</span></div>
+      <div class="grow"><span class="k">Baseline XP</span><span class="v">${fmt(c.old_xp)}</span></div>
+      <div class="grow"><span class="k" style="color:var(--bd-green)">Gained XP</span><span class="v" style="color:var(--bd-green)">+${fmt(c.gained_exp)}</span></div>
+    `;
+    toast("✅ Guild tracked", "success");
+  }catch(e){
+    box.innerHTML = `<div style="color:var(--bd-red);font-weight:800">❌ ${esc(e.message)}</div>`;
+    toast("❌ Guild error", "error");
+  }
+}
+
+async function clanJoin(){
+  const id = $("guildId").value.trim();
+  if(!id){ toast("Clan ID required", "error"); return; }
+  try{
+    const r = await fetch(API + "/api/clanjoin", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({clan_id: id})
+    });
+    const d = await r.json();
+    if(r.status===200){ toast("✅ " + (d.message||"Join sent"), "success"); }
+    else toast("❌ " + (d.error||"failed"), "error");
+  }catch(e){ toast("❌ Clan join failed", "error"); }
+}
+
+// ══ POLLING ══
+loadStats();
+setInterval(loadStats, 2500);
+</script>
+</body>
+</html>
