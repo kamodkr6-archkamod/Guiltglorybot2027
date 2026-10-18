@@ -1,16 +1,7 @@
 # -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════════════════
-#  🇧🇩  TCP NAIM — PREMIUM DASHBOARD SERVER  🇧🇩
-#  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#     👑 Owner      : TCP NAIM
-#     🌏 Country    : Bangladesh 🇧🇩
-#     🎮 Purpose    : Real-Time EXP & Squad Dashboard
-#     ⚡ Version    : PREMIUM EDITION v2.0
-#     📅 Build      : 2026
-#  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  ⚠️  Unauthorized copy/redistribution is strictly prohibited!
-#  © 2026 TCP NAIM — All Rights Reserved
-# ═══════════════════════════════════════════════════════════════════
+#  🇧🇩  NAIM — PREMIUM DASHBOARD SERVER  🇧🇩
+#  ═══════════════════════════════════════════════════════════════════
 
 import asyncio
 import json
@@ -24,111 +15,20 @@ import httpx
 import jwt
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
-import ReqCLan_pb2
 import encode_id_clan_pb2
 import data_pb2
-import output_pb2
 from google.protobuf.json_format import MessageToDict
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ═══════════════════════════ BRAND ═══════════════════════════
-BRAND_NAME       = "TCP NAIM"
+BRAND_NAME       = "NAIM"
 BRAND_COUNTRY    = "Bangladesh 🇧🇩"
 BRAND_VERSION    = "PREMIUM v2.0"
 BRAND_YEAR       = "2026"
 BRAND_TAGLINE    = "🔥 Bangladesh's #1 Squad Bot 🔥"
 
-TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MAHIN_CODEX", "index.html")
-
-# ═══════════════════════════ FALLBACK INDEX HTML ═══════════════════════════
-FALLBACK_INDEX_HTML = """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>🇧🇩 TCP NAIM — Premium Squad Bot Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: radial-gradient(ellipse at top, #1a0018 0%, #0a0010 40%, #000 100%);
-  color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-}
-.container {
-  text-align: center; padding: 60px 40px;
-  background: rgba(20, 0, 30, 0.6);
-  border: 2px solid #ff3366;
-  border-radius: 24px;
-  box-shadow: 0 0 60px rgba(255, 51, 102, 0.4), 0 0 120px rgba(0, 255, 100, 0.15);
-  max-width: 640px; width: 100%;
-  backdrop-filter: blur(10px);
-}
-h1 {
-  font-size: 3rem; font-weight: 900; letter-spacing: 4px;
-  background: linear-gradient(90deg, #ff3366 0%, #00ff64 50%, #ffcc00 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; text-fill-color: transparent;
-  margin-bottom: 12px;
-  text-shadow: 0 0 40px rgba(255, 51, 102, 0.5);
-}
-h2 {
-  font-size: 1.3rem; color: #00ff64; font-weight: 600;
-  letter-spacing: 2px; margin-bottom: 28px;
-}
-.badge {
-  display: inline-block; padding: 8px 20px; margin: 6px;
-  border-radius: 30px; font-size: 0.85rem; font-weight: 700;
-  letter-spacing: 1px;
-}
-.badge-bd { background: linear-gradient(90deg, #006a4e, #f42a41); color:#fff; }
-.badge-gold { background: linear-gradient(90deg, #ffcc00, #ff8800); color:#000; }
-.badge-cyan { background: linear-gradient(90deg, #00d4ff, #0099ff); color:#000; }
-.status {
-  margin-top: 32px; padding: 16px 24px;
-  background: rgba(0, 255, 100, 0.08);
-  border: 1px solid rgba(0, 255, 100, 0.4);
-  border-radius: 14px; color: #00ff64;
-  font-weight: 600; letter-spacing: 1.5px;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 100, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(0, 255, 100, 0.5); }
-}
-.footer {
-  margin-top: 32px; padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: #888; font-size: 0.8rem; letter-spacing: 1px;
-}
-.footer strong { color: #ff3366; }
-.flag { font-size: 1.4rem; }
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="flag">🇧🇩</div>
-  <h1>TCP NAIM</h1>
-  <h2>PREMIUM SQUAD BOT DASHBOARD</h2>
-
-  <div>
-    <span class="badge badge-bd">🇧🇩 Bangladesh Edition</span>
-    <span class="badge badge-gold">⚡ PREMIUM v2.0</span>
-    <span class="badge badge-cyan">🎮 Battle Royale</span>
-  </div>
-
-  <div class="status">
-    ✅ BOT IS RUNNING — Dashboard Interface Loaded Successfully
-  </div>
-
-  <div class="footer">
-    © 2026 <strong>TCP NAIM</strong> — All Rights Reserved<br>
-    <span style="font-size:0.7rem;opacity:0.6;">🔥 Bangladesh's #1 Squad Bot 🔥</span>
-  </div>
-</div>
-</body>
-</html>"""
+TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
 
 OB = "OB55"
 KEY = bytes([89,103,38,116,99,37,68,69,117,104,54,37,90,99,94,56])
@@ -145,7 +45,6 @@ GAME_HEADERS = {
     "Expect": "100-continue"
 }
 
-# ═══════════════════════════ 🇧🇩 BD FIRST — Region Map ═══════════════════════════
 REGION_SERVER_MAP = {
     "BD":  ("https://clientbp.ggwhitehawk.com", "clientbp.ggwhitehawk.com"),
     "BGD": ("https://clientbp.ggwhitehawk.com", "clientbp.ggwhitehawk.com"),
@@ -256,6 +155,8 @@ def fetch_single_clan(clan_id, region, token_cache):
 
 async def request_clan_async(jwt_token, clan_id, region):
     server_url = get_server_url(region)
+    # Assuming ReqCLan_pb2 is imported, we'll use raw protobuf generation here
+    import ReqCLan_pb2
     msg = ReqCLan_pb2.MyMessage()
     msg.field_1 = int(clan_id)
     payload = encrypt_payload(msg.SerializeToString())
@@ -621,12 +522,11 @@ class BotState:
     def recalc_totals(self):
         self.total_gained_exp = sum(acc.get("gained_exp", 0) for acc in self.accounts.values())
 
-
 bot_state = BotState()
 
 # ═══════════════════════════ HANDLERS ═══════════════════════════
 async def handle_index(request: web.Request) -> web.Response:
-    content = FALLBACK_INDEX_HTML
+    content = "Dashboard HTML not found."
     if os.path.exists(TEMPLATE_PATH):
         try:
             with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
@@ -634,7 +534,6 @@ async def handle_index(request: web.Request) -> web.Response:
         except Exception:
             pass
     return web.Response(text=content, content_type="text/html", charset="utf-8")
-
 
 async def handle_get_stats(request: web.Request) -> web.Response:
     accounts_data = list(bot_state.accounts.values())
@@ -667,7 +566,6 @@ async def handle_get_stats(request: web.Request) -> web.Response:
         "logs": bot_state.logs[-80:],
         "uptime": uptime_sec
     })
-
 
 async def handle_api_clan_join(request: web.Request) -> web.Response:
     try:
@@ -704,7 +602,6 @@ async def handle_api_clan_join(request: web.Request) -> web.Response:
         }, status=200)
     except Exception as e:
         return web.json_response({'error': str(e)}, status=500)
-
 
 GUILD_CACHE_FILE = "guild_exp_cache.json"
 
@@ -799,7 +696,6 @@ async def handle_api_guild_info(request: web.Request) -> web.Response:
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-
 async def handle_add_account(request: web.Request) -> web.Response:
     try:
         data = await request.json()
@@ -860,7 +756,6 @@ async def handle_add_account(request: web.Request) -> web.Response:
         return web.json_response({"status": "ok", "brand": BRAND_NAME})
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
-
 
 async def handle_delete_account(request: web.Request) -> web.Response:
     try:
@@ -991,7 +886,7 @@ async def handle_delete_account(request: web.Request) -> web.Response:
             if k_str in candidate_ids:
                 should_cancel = True
             for tok in target_tokens:
-                if k_str == tok[:16] or tok.startswith(k_str[:10]):
+                if k_str == tok[:16] or k_str.startswith(k_str[:10]):
                     should_cancel = True
             if should_cancel:
                 try:
@@ -1019,7 +914,6 @@ async def handle_delete_account(request: web.Request) -> web.Response:
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
 
-
 async def handle_refresh_account(request: web.Request) -> web.Response:
     try:
         data = await request.json()
@@ -1029,7 +923,6 @@ async def handle_refresh_account(request: web.Request) -> web.Response:
         return web.json_response({"status": "ok"})
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
-
 
 async def handle_restart_account(request: web.Request) -> web.Response:
     try:
@@ -1043,11 +936,9 @@ async def handle_restart_account(request: web.Request) -> web.Response:
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
 
-
 async def handle_clear_logs(request: web.Request) -> web.Response:
     bot_state.logs.clear()
     return web.json_response({"status": "ok"})
-
 
 async def handle_toggle_pause(request: web.Request) -> web.Response:
     try:
@@ -1060,14 +951,12 @@ async def handle_toggle_pause(request: web.Request) -> web.Response:
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
 
-
 async def handle_toggle_pause_all(request: web.Request) -> web.Response:
     try:
         paused_state = bot_state.toggle_pause_all()
         return web.json_response({"status": "ok", "all_paused": paused_state})
     except Exception as e:
         return web.json_response({"status": "error", "error": str(e)})
-
 
 async def handle_api_logs(request: web.Request) -> web.Response:
     formatted_logs = []
@@ -1086,7 +975,6 @@ async def handle_api_logs(request: web.Request) -> web.Response:
         else:
             formatted_logs.append(str(entry))
     return web.json_response({"logs": formatted_logs}, status=200)
-
 
 # ═══════════════════════════ START WEB DASHBOARD ═══════════════════════════
 async def start_web_dashboard(host: str = "0.0.0.0", port: int = 20333):
@@ -1110,8 +998,8 @@ async def start_web_dashboard(host: str = "0.0.0.0", port: int = 20333):
     await site.start()
 
     print("\033[38;5;196m" + "═" * 64 + "\033[0m")
-    print("\033[38;5;46m  🇧🇩  TCP NAIM — PREMIUM DASHBOARD SERVER  🇧🇩\033[0m")
-    print("\033[38;5;220m  ⚡ PREMIUM SQUAD BOT v2.0 | © 2026 TCP NAIM\033[0m")
+    print("\033[38;5;46m  🇧🇩  NAIM — PREMIUM DASHBOARD SERVER  🇧🇩\033[0m")
+    print("\033[38;5;220m  ⚡ PREMIUM SQUAD BOT v2.0 | © 2026 NAIM\033[0m")
     print("\033[38;5;196m" + "═" * 64 + "\033[0m")
     print(f"\033[38;5;46m  ✔ Dashboard URL : http://{host}:{port}\033[0m")
     print(f"\033[38;5;220m  🌏 Country       : Bangladesh 🇧🇩\033[0m")
