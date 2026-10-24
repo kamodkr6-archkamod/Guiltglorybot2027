@@ -1,8 +1,4 @@
-httpx
-google-play-scraper
-pycryptodome
-protobuf-decoder
-protobuf
-requests
+flask
 aiohttp
-PyJWT
+protobuf
+pycryptodome
